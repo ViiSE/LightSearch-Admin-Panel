@@ -1,0 +1,50 @@
+
+@media only screen and (max-width: 600px) {
+  #lsTabMenu {
+    display: none;
+  }
+
+  #tabName {
+    display: revert;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  #lsTabMenu {
+    display: none;
+  }
+
+  #tabName {
+    display: revert;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  #lsTabMenu {
+    display: revert;
+  }
+
+  #tabName {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  #lsTabMenu {
+    display: revert;
+  }
+
+  #tabName {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  #lsTabMenu {
+    display: revert;
+  }
+
+  #tabName {
+    display: none;
+  }
+}

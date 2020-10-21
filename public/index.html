@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="../static/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    html { background-color: #007dff; height: 110% }
+  </style>
+  <title>Admin Panel</title>
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+  <div id="root"></div>
+</div>
+</body>
+</html>
