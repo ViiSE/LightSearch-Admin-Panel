@@ -1,6 +1,6 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL: "http://localhost:8080/admins/commands",
+    baseURL: "/admins/commands",
     responseType: "json"
 });
