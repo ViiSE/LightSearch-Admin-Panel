@@ -14,8 +14,7 @@
  *    limitations under the License.
  */
 
-import React from 'react';
-import {Component} from "react";
+import React, {Component} from 'react';
 import {Button} from "primereact/button";
 import {Fieldset} from "primereact/fieldset";
 import {InputText} from "primereact/inputtext";

@@ -14,12 +14,11 @@
  *    limitations under the License.
  */
 
-import React from 'react';
-import {Component} from "react";
+import React, {Component} from 'react';
 import {ClientService} from "../service/ClientService";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
-import { Button } from 'primereact/button';
+import {Button} from 'primereact/button';
 import 'primeicons/primeicons.css';
 import {InputText} from "primereact/inputtext";
 import {ColumnGroup} from "primereact/columngroup";

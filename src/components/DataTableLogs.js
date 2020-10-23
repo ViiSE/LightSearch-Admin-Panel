@@ -14,8 +14,7 @@
  *    limitations under the License.
  */
 
-import React from "react";
-import {Component} from "react";
+import React, {Component} from "react";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {LogService} from "../service/LogService";

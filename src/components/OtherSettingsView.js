@@ -14,8 +14,7 @@
  *    limitations under the License.
  */
 
-import React from 'react';
-import {Component} from "react";
+import React, {Component} from 'react';
 import {Fieldset} from "primereact/fieldset";
 import "./ClientSettingsView.css";
 import {Dropdown} from "primereact/dropdown";
