@@ -25,7 +25,8 @@ export class DataTableLogs extends Component {
             selectedTypes: null,
             searchChips: [],
             minDate: null,
-            maxDate: null
+            maxDate: null,
+            isMobile: !(window.innerWidth > 600)
         };
 
         this.logService = new LogService();
@@ -40,6 +41,7 @@ export class DataTableLogs extends Component {
     }
 
     componentDidMount() {
+        window.addEventListener('resize', this.updateDimensions);
         this.logService.getLogs().then(data => {
             let datesLog = [];
 
@@ -63,6 +65,19 @@ export class DataTableLogs extends Component {
             });
         });
     }
+
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateDimensions);
+    }
+
+    updateDimensions = () => {
+        if(window.innerWidth <= 600) {
+            this.setState({ isMobile: true });
+        } else {
+            this.setState({ isMobile: false });
+        }
+    };
 
     componentDidUpdate (prevProps, prevState) {
         if(prevState.searchText !== this.state.searchText) {
@@ -114,6 +129,7 @@ export class DataTableLogs extends Component {
                         onInput={ (e) => this.setState({searchText: e.target.value}) }
                         placeholder={i18n.t("globalSearch")}/>
                 </span>
+                {this.state.isMobile ? <div/> :
                 <Calendar ref={(cal) => this.cal = cal}
                           dateFormat="dd.mm.yy" placeholder={i18n.t("pickADate")}
                           value={this.state.date}
@@ -137,6 +153,7 @@ export class DataTableLogs extends Component {
                                   this.onMessageFilterInput("");
                               }
                           }}/>
+                }
             </div>
         );
     }
@@ -227,7 +244,7 @@ export class DataTableLogs extends Component {
                             filter
                             filterElement={typeFilter}/>
                     <Column field="msg" header={i18n.t("message")} style={{width: "85%", wordWrap: "break-word"}}
-                            filter
+                            filter={!this.state.isMobile}
                             filterElement={msgFilter}
                             />
                 </DataTable>
