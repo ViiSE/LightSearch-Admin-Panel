@@ -61,6 +61,7 @@ export class DatasourceView extends Component {
             filteredEncodings: null,
             filteredDbTypes: null,
             filteredDriverName: null,
+            isToggleable: !(window.innerWidth > 600),
 
             current: {
                 username: "",
@@ -97,7 +98,20 @@ export class DatasourceView extends Component {
         this.searchDbType = this.searchDbType.bind(this);
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateDimensions);
+    }
+
+    updateDimensions = () => {
+        if(window.innerWidth <= 600) {
+            this.setState({ isToggleable: true });
+        } else {
+            this.setState({ isToggleable: false });
+        }
+    };
+
     async componentDidMount() {
+        window.addEventListener('resize', this.updateDimensions);
         this.datasourceService.getDatasource().then(data => {
             this.setState({
                 username: data.username,
@@ -330,10 +344,10 @@ export class DatasourceView extends Component {
     render() {
         return (<>
             <Toast ref={(el) => this.toast = el} />
-            <Fieldset legend={i18n.t("datasource")} style={{marginTop: "1em"}}>
+            <Fieldset toggleable={this.state.isToggleable} legend={i18n.t("datasource")} style={{marginTop: "1em"}}>
                 <div className="p-grid">
                     <div className="p-col-12 p-md-6">
-                        <Fieldset legend={i18n.t("connection")} style={{marginTop: "1em"}}>
+                        <Fieldset toggleable={this.state.isToggleable} legend={i18n.t("connection")} style={{marginTop: "1em"}}>
                             <div className="p-grid p-dir-col">
                                 <div className="p-col">
                                     <label htmlFor="username" className="p-d-block" style={{textAlign: "left"}}>{i18n.t("username")}</label>
@@ -347,6 +361,7 @@ export class DatasourceView extends Component {
                                 <div className="p-col">
                                     <label htmlFor="password" className="p-d-block" style={{textAlign: "left"}}>{i18n.t("password")}</label>
                                     <Password value={this.state.password} id="password" className="p-d-block"
+                                              feedback={false}
                                               onChange={(e) => {
                                                   this.changeState(
                                                       {password: e.target.value, disabledApply: true, disabledReset: true},
@@ -439,7 +454,7 @@ export class DatasourceView extends Component {
                         </Fieldset>
                     </div>
                     <div className="p-col-12 p-md-6">
-                        <Fieldset legend={i18n.t("pool")} style={{marginTop: "1em"}}>
+                        <Fieldset toggleable={this.state.isToggleable} legend={i18n.t("pool")} style={{marginTop: "1em"}}>
                             <div className="p-grid p-dir-col">
                                 <div className="p-col">
                                     <div className="p-field-checkbox">

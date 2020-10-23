@@ -14,6 +14,7 @@ import {ColumnGroup} from "primereact/columngroup";
 import {Row} from "primereact/row";
 import {appSettings} from "./AppSettings";
 import i18n from "i18next";
+import {visibility} from "../utils/CssProps";
 
 export class DataTableBlacklist extends Component {
 
@@ -22,11 +23,6 @@ export class DataTableBlacklist extends Component {
     };
 
     emptyBlacklist = [];
-
-    visibility = {
-        hidden: "hidden",
-        visible: "visible"
-    };
 
     constructor(props) {
         super(props);
@@ -39,8 +35,8 @@ export class DataTableBlacklist extends Component {
             addBlacklistImei: "",
             removeBlacklistImei: "",
             tagBlacklist: "tag",
-            addBlacklistLoading: this.visibility.hidden,
-            removeBlacklistLoading: this.visibility.hidden,
+            addBlacklistLoading: visibility.hidden,
+            removeBlacklistLoading: visibility.hidden,
             blacklistSize: 0
         };
         this.blacklistService = new BlacklistService();
@@ -80,7 +76,7 @@ export class DataTableBlacklist extends Component {
     }
 
     async confirmAddBlacklist() {
-        this.setState({addBlacklistLoading: this.visibility.visible});
+        this.setState({addBlacklistLoading: visibility.visible});
 
         try {
             let data = await this.blacklistService.addToBlacklist(this.state.addBlacklistImei);
@@ -88,7 +84,7 @@ export class DataTableBlacklist extends Component {
             newBlacklist.push({imei: data.imeilist[0]});
 
             this.setState({
-                addBlacklistLoading: this.visibility.hidden,
+                addBlacklistLoading: visibility.hidden,
                 blacklist: newBlacklist,
                 addBlacklistImei: "",
                 blacklistSize: newBlacklist.length
@@ -99,14 +95,14 @@ export class DataTableBlacklist extends Component {
             console.log(response);
             console.log(i18n.t("addBlacklistRequestFailed") + response);
             this.setState({
-                addBlacklistLoading: this.visibility.hidden
+                addBlacklistLoading: visibility.hidden
             });
             this.toast.show({ severity: 'error', summary: i18n.t("error"), detail: response.message, life: appSettings.TOAST_LIVE });
         }
     }
 
     async confirmRemoveBlacklistOverlay() {
-        this.setState({removeBlacklistLoading: this.visibility.visible});
+        this.setState({removeBlacklistLoading: visibility.visible});
 
         try {
             let data = await this.blacklistService.removeFromBlacklist(this.state.removeBlacklistImei);
@@ -114,7 +110,7 @@ export class DataTableBlacklist extends Component {
             this.setState({
                 blacklist: blacklist,
                 blacklistSize: blacklist.length,
-                removeBlacklistLoading: this.visibility.hidden,
+                removeBlacklistLoading: visibility.hidden,
                 removeBlacklistImei: ""
             });
             this.toast.show({ severity: 'success', summary: i18n.t("successful"), detail: data.message, life: appSettings.TOAST_LIVE });
@@ -123,7 +119,7 @@ export class DataTableBlacklist extends Component {
             console.log(response);
             console.log(i18n.t("removeBlacklistRequestFailed") + response);
             this.setState({
-                removeBlacklistLoading: this.visibility.hidden
+                removeBlacklistLoading: visibility.hidden
             });
             this.toast.show({ severity: 'error', summary: i18n.t("error"), detail: response.message, life: appSettings.TOAST_LIVE });
         }

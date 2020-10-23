@@ -217,7 +217,9 @@ const resources = {
             "clients": "Clients",
             "kick": "Kick",
             "addToTheBlacklist": "Add to the blacklist",
+            "copyToClipboard": "Copy IMEI to Clipboard",
             "globalSearch": "Global Search",
+            "searchByIMEI": "Search By IMEI",
             "username": "Username",
             "IMEIHash": "IMEI Hash",
             "tokenValidTo": "Token Valid To",
@@ -284,14 +286,23 @@ const resources = {
             "removeClientsFromTheBlacklist": "Clients removed from the blacklist",
             "removeClientFromTheBlacklist": "Client removed from the blacklist",
             "removeFromTheBlacklistBtn": "Remove from the blacklist",
+            "enterIMEI": "Enter IMEI",
             "enterIMEIOrIMEIHash": "Enter IMEI or IMEI Hash",
             "removeClientsFromTheBlacklistQuestion": "Are you sure want to remove the selected clients from the blacklist?",
             "removeClientFromTheBlacklistQuestion": "Are you sure want to remove this client from the blacklist?",
             "removeByIMEI": "Remove by IMEI",
             "logDateSearch": "Search by Date",
+            "search": "Search",
             "pickADate": "Pick a date",
             "restartTime": "Restart in",
-            "restartTimeSec": " seconds"
+            "restartTimeSec": " seconds",
+            "imeiCopied": "IMEI is copied",
+            "clear": "Clear",
+            "changePass": "Change password",
+            "change": "Change",
+            "enterNewPass": "Enter new password",
+            "changePassRequestFailed": "Request failed from changePass",
+            "logout": "Logout"
         }
     },
     ru: {
@@ -299,7 +310,9 @@ const resources = {
             "clients": "Клиенты",
             "kick": "Исключить",
             "addToTheBlacklist": "Добавить в ЧС",
+            "copyToClipboard": "Копировать IMEI",
             "globalSearch": "Глобальный поиск",
+            "searchByIMEI": "Поиск по IMEI",
             "username": "Имя Пользователя",
             "IMEIHash": "Хэш IMEI",
             "tokenValidTo": "Токен: годен до",
@@ -366,13 +379,22 @@ const resources = {
             "removeClientsFromTheBlacklist": "Клиенты удалены из черного списка",
             "removeClientFromTheBlacklist": "Клиент удален из черного списка",
             "removeFromTheBlacklistBtn": "Удалить из ЧС",
+            "enterIMEI": "Введите IMEI",
             "enterIMEIOrIMEIHash": "Введите IMEI или Хэш IMEI",
             "removeClientsFromTheBlacklistQuestion": "Вы уверены, что хотите удалить выбранных клиентов из черного списка?",
             "removeClientFromTheBlacklistQuestion": "Вы уверены, что хотите удалить выбранного клиента из черного списка?",
             "logDateSearch": "Поиск по Дате",
+            "search": "Поиск",
             "pickADate": "Выберите дату",
             "restartTime": "Перезагрузка через",
-            "restartTimeSec": " секунд"
+            "restartTimeSec": " секунд",
+            "imeiCopied": "IMEI скопирован в буфер обмена",
+            "clear": "Очистить",
+            "changePass": "Изменить пароль",
+            "change": "Изменить",
+            "enterNewPass": "Введите новый пароль",
+            "changePassRequestFailed": "Ошибка при отправке команды changePass",
+            "logout": "Выход"
         }
     }
 };

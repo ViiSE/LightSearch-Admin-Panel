@@ -53,7 +53,7 @@ export class SettingsView extends Component {
             iconButtonClassName: iconRestartButton.anim
         });
         let result = await this.restartService.restart();
-        this.toast.show({ severity: 'success', summary: 'Successful', detail: result.message, life: appSettings.TOAST_LIVE });
+        this.toast.show({ severity: 'success', summary: i18n.t('successful'), detail: result.message, life: appSettings.TOAST_LIVE });
 
         restartState = false;
         let resSec = 5;
@@ -84,7 +84,7 @@ export class SettingsView extends Component {
                             <ClientSettingsView restart={this.needRestart}/>
                         </div>
                         <div className="p-col">
-                            <OtherSettingsView refresh={this.refresh} lang={this.props.lang}/>
+                            <OtherSettingsView restart={this.needRestart} refresh={this.refresh} lang={this.props.lang}/>
                         </div>
                     </div>
                     </div>

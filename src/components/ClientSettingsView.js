@@ -28,6 +28,7 @@ export class ClientSettingsView extends Component {
             clientTimeout: 0,
             disabledApply: true,
             disabledReset: true,
+            isToggleable: !(window.innerWidth > 600),
             smallStyleClass: this.smallHintStyleClasses.hidden,
             current: {
                 clientTimeout: 0
@@ -43,7 +44,20 @@ export class ClientSettingsView extends Component {
         this.reset = this.reset.bind(this);
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateDimensions);
+    }
+
+    updateDimensions = () => {
+        if(window.innerWidth <= 600) {
+            this.setState({ isToggleable: true });
+        } else {
+            this.setState({ isToggleable: false });
+        }
+    };
+
     async componentDidMount() {
+        window.addEventListener('resize', this.updateDimensions);
         this.clientTimeoutService.getClientTimeout().then(data => {
             this.setState({
                 clientTimeout: data["client_timeout"],
@@ -127,7 +141,7 @@ export class ClientSettingsView extends Component {
     render() {
         return (<>
             <Toast ref={(el) => this.toast = el} />
-            <Fieldset legend={i18n.t('clients')} style={{marginTop: "1em"}}>
+            <Fieldset toggleable={this.state.isToggleable} legend={i18n.t('clients')} style={{marginTop: "1em"}}>
                 <div className="p-grid p-dir-col">
                     <div className="p-col">
                         <label htmlFor="clTout" className="p-d-block" style={{textAlign: "left"}}>{i18n.t("clientTimeoutValue")}</label>

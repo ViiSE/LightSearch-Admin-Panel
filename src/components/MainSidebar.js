@@ -4,6 +4,7 @@ import {Button} from "primereact/button";
 import i18n from "i18next";
 import ls_logo from '../static/ls_logo_svg.svg'
 import {setCookie} from "../utils/CookiesUtils";
+import {SettingsService} from "../service/SettingsService";
 
 export class MainSidebar extends Component {
 
@@ -12,6 +13,8 @@ export class MainSidebar extends Component {
 
         this.changeRoute = this.changeRoute.bind(this);
         this.refresh = this.refresh.bind(this);
+        this.logout = this.logout.bind(this);
+        this.settingsService = new SettingsService();
     }
 
     changeRoute(path) {
@@ -19,6 +22,11 @@ export class MainSidebar extends Component {
         setCookie("hashLink", path);
         window.location.hash = path;
         this.props.onHideSidebar(path);
+    }
+
+    async logout() {
+        await this.settingsService.logout();
+        window.location.replace("/login");
     }
 
     refresh() {
@@ -39,6 +47,8 @@ export class MainSidebar extends Component {
                             onClick={() => this.changeRoute("/logs")}/>
                     <Button icon="pi pi-fw pi-cog" label={i18n.t("settings")} style={{marginTop: "0.5em"}}
                             onClick={() => this.changeRoute("/settings")}/>
+                    <Button icon="pi pi-fw pi-sign-out" label={i18n.t("logout")} className="p-button-secondary"
+                            style={{marginTop: "0.5em"}} onClick={() => {this.logout().then(r => console.log(r))}}/>
                 </div>
             </Sidebar>
         );

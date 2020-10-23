@@ -18,4 +18,8 @@ export class ClientService {
             return (await API.delete("/clients?imeiList=" + imeiArr)).data;
         }
     }
+
+    async searchImei(imei) {
+        return (await API.get("/imei/hash?pure=" + imei)).data;
+    }
 }

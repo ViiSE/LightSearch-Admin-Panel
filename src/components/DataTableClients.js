@@ -14,6 +14,10 @@ import {Toast} from "primereact/toast";
 import {appSettings} from "./AppSettings";
 import {BlacklistService} from "./BlacklistService";
 import i18n from "i18next";
+import {ProgressBar} from "primereact/progressbar";
+import {OverlayPanel} from "primereact/overlaypanel";
+import {CopyToClipboard} from "react-copy-to-clipboard";
+import {visibility} from "../utils/CssProps";
 
 export class DataTableClients extends Component {
 
@@ -31,7 +35,10 @@ export class DataTableClients extends Component {
             selectedClients: null,
             selectedClient: this.emptyClient,
             clients: null,
-            amountClients: 0
+            searchImei: "",
+            searchImeiLoading: visibility.hidden,
+            amountClients: 0,
+            showBtnLabel: window.innerWidth > 600
         };
 
         this.clientsService = new ClientService();
@@ -51,9 +58,11 @@ export class DataTableClients extends Component {
         this.confirmAddBlacklistSelected = this.confirmAddBlacklistSelected.bind(this);
         this.addBlacklist = this.addBlacklist.bind(this);
         this.addBlacklistSelected = this.addBlacklistSelected.bind(this);
+        this.confirmSearchImei = this.confirmSearchImei.bind(this);
     }
 
     componentDidMount() {
+        window.addEventListener('resize', this.updateDimensions);
         this.clientsService.getClients().then(data => {
             this.setState({
                 amountClients: data.length,
@@ -61,6 +70,18 @@ export class DataTableClients extends Component {
             });
         });
     }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateDimensions);
+    }
+
+    updateDimensions = () => {
+        if(window.innerWidth <= 600) {
+            this.setState({ showBtnLabel: false });
+        } else {
+            this.setState({ showBtnLabel: true });
+        }
+    };
 
     hideKickClientDialog() {
         this.setState({ kickClientDialog: false });
@@ -81,6 +102,18 @@ export class DataTableClients extends Component {
         this.setState({
             kickClientsDialogSelected: true
         });
+    }
+
+    async confirmSearchImei() {
+        try {
+            this.setState({ searchImeiLoading: visibility.visible });
+            let data = await this.clientsService.searchImei(this.state.searchImei);
+            this.setState({ searchImeiLoading: visibility.hidden, globalFilter: data["hash_imei"] });
+        } catch (e) {
+            let response = e.response.data;
+            this.setState({ searchImeiLoading: visibility.hidden });
+            this.toast.show({ severity: 'error', summary: i18n.t("error"), detail: response.message, life: appSettings.TOAST_LIVE });
+        }
     }
 
     async kickClient() {
@@ -220,6 +253,12 @@ export class DataTableClients extends Component {
                         tooltip={i18n.t("addToTheBlacklist")}
                         onClick={() => {this.confirmAddBlacklist(rowData)}}
                         tooltipOptions={{position: "top"}}/>
+                <CopyToClipboard text={rowData.imei}
+                                 onCopy={() => {this.toast.show({ severity: 'success', summary: i18n.t("successful"), detail: i18n.t("imeiCopied"), life: appSettings.TOAST_LIVE });}}>
+                    <Button style={buttonStyle} type="button" icon="pi pi-save"
+                            tooltip={i18n.t("copyToClipboard")}
+                            tooltipOptions={{position: "top"}}/>
+                </CopyToClipboard>
             </div>
         );
     }
@@ -252,13 +291,33 @@ export class DataTableClients extends Component {
     renderToolbarButton() {
         return (
             <>
-                <Button label={i18n.t("kick")} icon="pi pi-user-minus" className="p-button-warning"
+                <Button label={this.state.showBtnLabel ? i18n.t("kick"): ""} icon="pi pi-user-minus" className="p-button-warning"
                         onClick={this.confirmKickClientsSelected}
                         disabled={!this.state.selectedClients || !this.state.selectedClients.length} />
                 <div style={{marginLeft: "0.5em"}} />
-                <Button label={i18n.t("addToTheBlacklist")} icon="pi pi-ban" className="p-button-danger"
+                <Button label={this.state.showBtnLabel ? i18n.t("addToTheBlacklist"): ""} icon="pi pi-ban" className="p-button-danger"
                         onClick={this.confirmAddBlacklistSelected}
                         disabled={!this.state.selectedClients || !this.state.selectedClients.length} />
+                <div style={{marginLeft: "0.5em"}} />
+                <Button label={this.state.showBtnLabel ? i18n.t("searchByIMEI"): ""} icon="pi pi-search"
+                        onClick={(e) => this.op.toggle(e)}/>
+                <OverlayPanel ref={(el) => this.op = el}>
+                    <div className="p-inputgroup">
+                        <InputText placeholder={i18n.t("enterIMEI")}
+                                   onInput={ (e) => this.setState({searchImei: e.target.value})}/>
+                        {/*<InputText placeholder="Enter Tag"*/}
+                        {/*           onInput={ (e) => this.setState({tagBlacklist: e.target.value})}/>*/}
+                        <Button label={this.state.showBtnLabel ? i18n.t("search") : ""} icon="pi pi-search" className="p-button-success"
+                                disabled={(this.state.searchImei) === ""}
+                                onClick={this.confirmSearchImei}/>
+                        <Button label={this.state.showBtnLabel ? i18n.t("clear") : ""} icon="pi pi-times-circle" className="p-button-success"
+                                disabled={(this.state.globalFilter) === undefined || (this.state.globalFilter) === ""}
+                                onClick={() => {
+                                    console.log(this.state.globalFilter);  this.setState({globalFilter: ""})}}/>
+                    </div>
+                    <div style={{marginTop: "0.2em"}} />
+                    <ProgressBar mode="indeterminate" style={{height: "0.2em", visibility: this.state.searchImeiLoading}} />
+                </OverlayPanel>
             </>
         );
     }
